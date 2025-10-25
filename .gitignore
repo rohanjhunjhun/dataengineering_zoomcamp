@@ -1,0 +1,51 @@
+# Ignore PostgreSQL data directory
+ny_taxi_postgres_data/
+
+# Ignore specific data file
+yellow_tripdata_2025-01
+
+# Terraform-related ignores
+*.tfstate
+*.tfstate.*
+.terraform/
+*.tfvars
+.terraformrc
+terraform.rc
+
+*.tfstate
+*.tfstate.*
+*.tfvars
+.terraformrc
+terraform.rc
+
+# Credentials and keys
+*.json.key
+*credentials*.json
+service-account*.json
+*.pem
+# Ignore service account / key JSONs in the terraform folder (explicit)
+basicsandsetup/terraform/*.json
+# Ignore that specific key file if present
+basicsandsetup/terraform/tonal-land-475120-v3-6a713a11bac9.json
+
+# Python-related ignores
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment-related
+.env
+.venv
+env/
+venv/
+ENV/
+
+# IDE-related
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS-related
+.DS_Store
+Thumbs.db
