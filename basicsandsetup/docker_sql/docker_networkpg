@@ -1,44 +1,35 @@
+# Create a custom Docker network
 docker create network pg-network
+
+# Run a PostgreSQL container connected to the custom network
 docker run -it \
-  -e POSTGRES_USER="root" \
-  -e POSTGRES_PASSWORD="root" \
-  -e POSTGRES_DB="ny_taxi" \
-  -v /Users/rohanjhunjhunwala/Desktop/dataengineering_zoomcamp/basicsandsetup/ny_taxi_postgres_data:/var/lib/postgresql/data \
-  -p 5432:5432 \
-  --network=pg-network \
-  --name pg-database \
+  -e POSTGRES_USER="root" \  # Set PostgreSQL username
+  -e POSTGRES_PASSWORD="root" \  # Set PostgreSQL password
+  -e POSTGRES_DB="ny_taxi" \  # Set default database
+  -v /Users/rohanjhunjhunwala/Desktop/dataengineering_zoomcamp/basicsandsetup/ny_taxi_postgres_data:/var/lib/postgresql/data \  # Persist data
+  -p 5432:5432 \  # Map PostgreSQL port
+  --network=pg-network \  # Connect to custom network
+  --name pg-database \  # Name the container
 postgres:13
 
+# Run pgAdmin container connected to the same network
 docker run -it \
-  -e PGADMIN_DEFAULT_EMAIL="admin@admin.com" \
-  -e PGADMIN_DEFAULT_PASSWORD="root" \
-  -p 8080:80 \
-  --network=pg-network \
-  --name pgadmin-container \
+  -e PGADMIN_DEFAULT_EMAIL="admin@admin.com" \  # Set pgAdmin email
+  -e PGADMIN_DEFAULT_PASSWORD="root" \  # Set pgAdmin password
+  -p 8080:80 \  # Map pgAdmin port
+  --network=pg-network \  # Connect to custom network
+  --name pgadmin-container \  # Name the container
   dpage/pgadmin4
 
-  python ingest_data.py \
-   --user=root \
-   --password=root \
-   --host=localhost \
-   --port=5432 \
-   --db=ny_taxi \
-   --table_name=yellow_taxi_data \
-   --filename=yellow_tripdata_2025-01.parquet \
-   --url=https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2025-01.parquet
-
-
+# Build a custom Docker image for data ingestion
 docker build -t taxi_ingest:v01
 
-
-docker run -it --network=pg-network \
-   taxi_ingest:v01 \
-   --user=root \
-   --password=root \
-   --host=pg-database \
-   --port=5432 \
-   --db=ny_taxi \
-   --table_name=yellow_taxi_data \
-   --filename=yellow_tripdata_2025-01.parquet \
-   --url=https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2025-01.parquet
+# Run the custom data ingestion container
+docker run -it --network=pg-network \  # Connect to custom network
+   taxi_ingest:v01 \  # Use the custom image
+   --user=root \  # PostgreSQL username
+   --password=root \  # PostgreSQL password
+   --host=pg-database \  # PostgreSQL host
+   --port=5432 \  # PostgreSQL port
+   --db=ny_taxi \  # Database name
 

@@ -1,35 +1,37 @@
 version: '3.8'
+
 services:
+  # PostgreSQL database service
   pgdatabase:
     image: postgres:13
     environment:
-      POSTGRES_USER: "root"
-      POSTGRES_PASSWORD: "root"
-      POSTGRES_DB: "ny_taxi"
+      POSTGRES_USER: "root"  # Database username
+      POSTGRES_PASSWORD: "root"  # Database password
+      POSTGRES_DB: "ny_taxi"  # Default database name
     volumes:
-      - /Users/rohanjhunjhunwala/Desktop/dataengineering_zoomcamp/basicsandsetup/ny_taxi_postgres_data:/var/lib/postgresql/data:rw
+      - /Users/rohanjhunjhunwala/Desktop/dataengineering_zoomcamp/basicsandsetup/ny_taxi_postgres_data:/var/lib/postgresql/data:rw  # Persist database data
     ports:
-      - "5432:5432"
+      - "5432:5432"  # Map PostgreSQL port
     networks:
-      - pg-network
+      - pg-network  # Connect to custom network
 
+  # pgAdmin service for managing PostgreSQL
   pgadmin:
     image: dpage/pgadmin4
     environment:
-      PGADMIN_DEFAULT_EMAIL: "admin@admin.com"
-      PGADMIN_DEFAULT_PASSWORD: "root"
+      PGADMIN_DEFAULT_EMAIL: "admin@admin.com"  # Default admin email
+      PGADMIN_DEFAULT_PASSWORD: "root"  # Default admin password
     ports:
-      - "8080:80"
+      - "8080:80"  # Map pgAdmin port
     volumes:
-      # persist pgAdmin configuration and saved servers
-      - pgadmin-data:/var/lib/pgadmin
+      - pgadmin-data:/var/lib/pgadmin  # Persist pgAdmin configuration
     depends_on:
-      - pgdatabase
+      - pgdatabase  # Ensure PostgreSQL starts first
     networks:
-      - pg-network
+      - pg-network  # Connect to custom network
 
 volumes:
-  pgadmin-data:
+  pgadmin-data:  # Volume for pgAdmin data
 
 networks:
-  pg-network:
+  pg-network:  # Custom network for services

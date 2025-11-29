@@ -1,9 +1,14 @@
-import sys
-import pandas as pd
+import sys  # For command-line arguments
+import pandas as pd  # For data manipulation
 
+# Print all command-line arguments
 print(sys.argv)
 
+# Extract the day argument from the command line
 day = sys.argv[1]
-#some fancy stuff
 
-print(f 'job finished successfully = {day}')
+# Placeholder for additional processing logic
+# Example: Perform some data transformation or validation
+
+# Print a success message with the provided day
+print(f'Job finished successfully = {day}')
