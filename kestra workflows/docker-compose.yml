@@ -1,4 +1,4 @@
-docker volumes:
+volumes:
   postgres-data:
     driver: local
   kestra-data:
